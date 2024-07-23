@@ -22,3 +22,6 @@ La aplicación sigue el patrón de diseño MVC, separando las preocupaciones en 
 - **Gestión de Productos**: Permite agregar, actualizar y visualizar productos, categorizados adecuadamente.
 - **Gestión de Pedidos**: Los usuarios pueden crear pedidos y los administradores pueden gestionar el ciclo de vida del pedido (pendiente, enviado, entregado, adquirido).
 - **Ofertas**: Creación dinámica de descuentos de productos para aumentar el compromiso de los usuarios y las ventas.
+  
+### Modelo de Arquitectura en Capas
+![image](https://github.com/user-attachments/assets/644b6e1c-481a-484f-8ad1-b157fb02c61b)
