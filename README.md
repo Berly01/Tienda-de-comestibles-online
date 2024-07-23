@@ -1,4 +1,4 @@
-Resumen de la Arquitectura
+# Resumen de la Arquitectura
 ### Framework de Backend:
 La aplicación utiliza el framework Spring MVC para manejar las solicitudes web y gestionar la lógica de negocio.
 
