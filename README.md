@@ -219,4 +219,54 @@ https://trello.com/b/5EylDJmu
 ## Documentación de Servicios en base al estándar OpenAPI y
 
 ## ScreenShots
+
+# Supermercado BPMN Bonita
+
+# Modelos de Procesos de Negocio para supermercado según Notación BPMN
+
+## Nombre de proceso: Modelo y Descripción del modelo
+
+* Soporte al cliente: El modelo bpmn permite al usuario consultar informacion al soporte de cliente, cual se divide en 2 niveles, nivel general y tecnico.
+
+### Elementos de información necesarios (datos o información) en el proceso de negocio.
+
+* Servicios del proyecto de IS3 (Consultar ofertas, Consultar productos)
+
+### Modelo de Datos: Diagrama de Clases UML
+
+### Variables
+
+* Cliente
+* Consulta
+* Solicion
+* Producto
+* Oferta
+* ProductoDetalles
+
+### Contratos y Restricciones
+
+| Tarea  | Variable | Propiedades |
+| ------------- | ------------- | ---- |
+| Chequea consulta | Consulta, Cliente  | esValido, derivar, necesitainformacionExtra, informacionValida |
+| Envia informacion extra fase general | Consulta, Cliente | mensaje, numeroTelefono, numeroCuenta |
+| Resuelve la consulta  fase general  | Solucion  | mensaje |
+| Chequea consulta fase tecnica | Consulta, Cliente | esValido, derivar, necesitainformacionExtra, informacionValida |
+| Envia informacion extra fase tecnica | Consulta, Cliente | mensaje, numeroTelefono, numeroCuenta | 
+| Resuelve la consulta  fase tecnica | Solucion | mensaje |
+
+
+### Formularios: GUI
+
+* hacerConsulta
+* chequearConsultaFaseGeneral
+* enviarInformacionExtra
+* chequearConsultaFaseTecnico
+* resolverConsultaFaseGeneral
+* resolverConsultaFaseTecnica
+
+### Mapeamiento de Actores y Roles
+
+* cliente: Puede hacer consultas al soporte tecnico, puede enviar informacion extra cuando el soporte tecnico se lo solicita.
+* soporte de nivel general
+* soporte de nivel tecnico
   
