@@ -192,7 +192,8 @@ Recibimos un status 200
 
 ![image](https://github.com/user-attachments/assets/6387ac71-ed3d-4fd2-afeb-f0e86a175bce)
 
-# API de gestión de pedidos: administra el ciclo de vida de un pedido desde su creación hasta su finalización. Los usuarios pueden crear pedidos, ver sus pedidos y los administradores pueden enviar, entregar y ver los detalles de los pedidos.
+# API de gestión de pedidos: 
+Administra el ciclo de vida de un pedido desde su creación hasta su finalización. Los usuarios pueden crear pedidos, ver sus pedidos y los administradores pueden enviar, entregar y ver los detalles de los pedidos.
 Podemos ver los productos solicitados anteriormente
 
 ![image](https://github.com/user-attachments/assets/2a356b8c-3062-4c3f-9b3e-51a963fb530c)
