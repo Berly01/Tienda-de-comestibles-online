@@ -181,10 +181,19 @@ Recibimos un status 200
 # API de gestión de pedidos: administra el ciclo de vida de un pedido desde su creación hasta su finalización. Los usuarios pueden crear pedidos, ver sus pedidos y los administradores pueden enviar, entregar y ver los detalles de los pedidos.
 Podemos ver los productos solicitados anteriormente
 ![image](https://github.com/user-attachments/assets/2a356b8c-3062-4c3f-9b3e-51a963fb530c)
+![image](https://github.com/user-attachments/assets/31f4cc46-7f00-426c-b91c-5154452671c3)
+API de busqueda de productos: La anotación @GetMapping("/api/find") en el método searchProducts en el UserController define un endpoint de API de búsqueda. Este endpoint permite a los usuarios buscar productos basados en una parte del nombre del producto.
+![image](https://github.com/user-attachments/assets/56d24e61-cdc7-4255-b10c-a7738f5da978)
+![image](https://github.com/user-attachments/assets/2cd544da-2c17-40e8-afcb-c5b8dc3e55e4)
 
-
+Configuración de seguridad: implementa Spring Security para gestionar la autenticación y la autorización de diferentes roles de usuario, lo que garantiza que solo los usuarios autorizados puedan acceder a funcionalidades específicas.
 ## Pruebas de Rendimiento (jMeter)
 ## Pruebas de Seguridad (Zap)
+
+Esta tabla muestra el número de alertas de cada tipo de alerta, junto con el nivel de riesgo del tipo de alerta.
+(Los porcentajes entre paréntesis representan cada recuento como un porcentaje, redondeado a un decimal, del número total de alertas incluidas en este informe).
+![image](https://github.com/user-attachments/assets/c55b1a3d-f24c-4418-84f4-ed99124e79e0)
+
 ## Gestión de Cambios – Issues (Trello)
 
 https://trello.com/b/5EylDJmu
