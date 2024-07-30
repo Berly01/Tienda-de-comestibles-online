@@ -33,7 +33,6 @@ public class OfferController extends BaseController {
     @PreAuthorize("isAuthenticated()")
     @PageTitle(SALES)
     public ModelAndView topOffers(ModelAndView modelAndView) {
-
         return view("offer/sales", modelAndView);
     }
 
@@ -41,10 +40,15 @@ public class OfferController extends BaseController {
     public List<OfferViewModel> fetchByCategory(@PathVariable String category) {
         return mapOfferServiceToViewModel(this.offerService.findAllOffers());
     }
-
-    private List<OfferViewModel> mapOfferServiceToViewModel(List<OfferServiceModel> offerServiceModel){
-        return offerServiceModel.stream()
+    
+    @GetMapping("offers/fetch")
+    public List<OfferViewModel> fetchAllOffers() {
+        return mapOfferServiceToViewModel(this.offerService.findAllOffers());
+    }
+    
+    private List<OfferViewModel> mapOfferServiceToViewModel(List<OfferServiceModel> offerServiceModel){ 	
+    	return offerServiceModel.stream()
                 .map(product -> modelMapper.map(product, OfferViewModel.class))
                 .collect(Collectors.toList());
-    }
+    } 
 }

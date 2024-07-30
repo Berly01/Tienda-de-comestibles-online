@@ -1,4 +1,3 @@
-
 # Tienda de Comestibles Online
 
 Una tienda de comestibles online es un sistema que registra usuarios, categorías, productos, gestiona pedidos y crea ofertas para productos con descuento aleatorios que cambian después de un tiempo determinado

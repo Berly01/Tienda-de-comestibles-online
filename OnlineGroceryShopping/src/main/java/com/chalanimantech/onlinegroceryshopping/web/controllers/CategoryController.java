@@ -41,7 +41,7 @@ public class CategoryController extends BaseController {
         this.categoryService = categoryService;
         this.modelMapper = modelMapper;
     }
-
+       
     @GetMapping("/add")
     @PageTitle("Add Category")
     @PreAuthorize("hasRole('ROLE_MODERATOR')")

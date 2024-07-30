@@ -19,7 +19,7 @@ public class WebSecurityConfiguration {
         http.csrf(csrf -> csrf
                 .csrfTokenRepository(csrfTokenRepository()))
                 .authorizeRequests(requests -> requests
-                        .antMatchers("/css/**", "/js/**", "/products/fetch/sale", "/fetch/sales/All").permitAll()
+                        .antMatchers("/css/**", "/js/**", "/products/fetch/sale", "/products/test", "/products/fetch", "/offers/fetch", "/fetch/sales/All").permitAll()
                         .antMatchers("/", "/login", "/register").anonymous()
                         .anyRequest().authenticated())
                 .formLogin(login -> login

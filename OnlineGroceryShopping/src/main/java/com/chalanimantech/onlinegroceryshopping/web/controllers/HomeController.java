@@ -7,6 +7,7 @@ import com.chalanimantech.onlinegroceryshopping.domain.models.view.CategoryViewM
 import com.chalanimantech.onlinegroceryshopping.service.CategoryService;
 
 import com.chalanimantech.onlinegroceryshopping.web.annotations.PageTitle;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +30,7 @@ public class HomeController extends BaseController {
         this.categoryService = categoryService;
         this.modelMapper = modelMapper;
     }
-
+ 
     @GetMapping("/")
     @PageTitle(INDEX)
     public ModelAndView renderIndexPage(Principal principal, ModelAndView modelAndView) {

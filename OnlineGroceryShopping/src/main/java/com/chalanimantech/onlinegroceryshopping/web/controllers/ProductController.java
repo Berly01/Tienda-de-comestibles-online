@@ -65,7 +65,7 @@ public class ProductController extends BaseController {
         this.categoryService = categoryService;
         this.modelMapper = modelMapper;
     }
-
+  
     @GetMapping("/add")
     @PreAuthorize("hasRole('ROLE_MODERATOR')")
     @PageTitle("Add Products")
@@ -245,7 +245,7 @@ public class ProductController extends BaseController {
     public List<ProductAllViewModel> fetchAllProducts() {
         return mapProductServiceToViewModel(productService.findAllFilteredProducts());
     }
-
+ 
     @GetMapping("/api/find")
     @PreAuthorize("hasRole('ROLE_USER')")
     public List<ProductAllViewModel> searchProducts(@RequestParam(PRODUCT_TO_LOWERCASE) String product) {
@@ -262,8 +262,8 @@ public class ProductController extends BaseController {
         return view("product/add-product", modelAndView);
     }
 
-    private List<ProductAllViewModel> mapProductServiceToViewModel(List<ProductServiceModel> productServiceModels){
-        return productServiceModels.stream()
+    private List<ProductAllViewModel> mapProductServiceToViewModel(List<ProductServiceModel> productServiceModels){         	
+    	return productServiceModels.stream()
                 .map(product -> modelMapper.map(product, ProductAllViewModel.class))
                 .collect(Collectors.toList());
     }
