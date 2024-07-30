@@ -40,7 +40,8 @@ Servicios: CategoryServiceImpl, OfferServiceImpl,
 OrderServiceImpl, ProductServiceImpl, ReceiptServiceImpl, UserServiceImpl.
 
 ### Representacion en Arquitectura en Capas
-![Main](https://github.com/user-attachments/assets/956c8098-0ac7-4e59-b7d3-d7646f9dbc70)
+![Main](https://github.com/user-attachments/assets/776d164f-fc7d-49ef-8b1b-97bfae6108d7)
+
 
 ## Patrón de Arquitectura
 
