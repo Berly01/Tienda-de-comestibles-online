@@ -11,15 +11,15 @@ public final class AppConstants {
     public static final String UUID_STRING = "uuid-string";
     public static final String UUID_GENERATOR = "org.hibernate.id.UUIDGenerator";
 
-    public static final String FAVICON_URL= "https://res.cloudinary.com/mgpavlov/image/upload/v1554912174/icons8-shopping-cart-96.png";
+    public static final String FAVICON_URL= "https://res.cloudinary.com/dyvzmgc5r/image/upload/v1722289592/icon_guibco.jpg";
     public static final String FAVICON= "favicon";
 
     public static final String GREETING= "greeting";
-    public static final String GREETING_GOOD_MORNING = "Good morning ";
-    public static final String GREETING_GOOD_AFTERNOON = "Good afternoon ";
-    public static final String GREETING_GOOD_EVENING = "Good evening ";
+    public static final String GREETING_GOOD_MORNING = "Buenos dias ";
+    public static final String GREETING_GOOD_AFTERNOON = "Buenas tardes ";
+    public static final String GREETING_GOOD_EVENING = "Buenas noches ";
 
-    public static final String TITLE_GROCERY_STORE = "Grocery Store";
+    public static final String TITLE_GROCERY_STORE = "Tienda de comestibles";
     public static final String TITLE = "title";
     public static final String DASH = " - ";
     public static final String EMPTY_STRING = "";
@@ -41,17 +41,17 @@ public final class AppConstants {
     public static final String RECEIPT_TO_LOWER_CASE = "receipt";
     public static final String RECEIPTS_DETAILS = "Receipts Details";
 
-    public static final String ORDERS = "Orders";
-    public static final String ORDER_DETAILS = "Order Details";
-    public static final String MY_ORDERS = "My Orders";
+    public static final String ORDERS = "Pedidos";
+    public static final String ORDER_DETAILS = "Detalles del pedido";
+    public static final String MY_ORDERS = "Mis pedidos";
     public static final String MY_PENDING_ORDERS = "myPendingOrders";
     public static final String MY_SHIPPED_ORDERS = "myShippedOrders";
     public static final String MY_DELIVERED_ORDERS = "myDeliveredOrders";
 
-    public static final String STATUS_ALL = "All";
-    public static final String STATUS_SHIPPED = "Shipped";
-    public static final String STATUS_DELIVERED = "Delivered";
-    public static final String STATUS_ACQUIRED = "Acquired";
+    public static final String STATUS_ALL = "Todo";
+    public static final String STATUS_SHIPPED = "Enviado";
+    public static final String STATUS_DELIVERED = "Entregado";
+    public static final String STATUS_ACQUIRED = "Adquirido";
 
     public static final String ORDERS_TO_LOWER_CASE = "orders";
     public static final String ORDER_TO_LOWER_CASE = "order";
@@ -71,8 +71,8 @@ public final class AppConstants {
     public static final String URL_TO_LOWERCASE = "url";
     public static final String TEMP_FILE = "temp-file";
 
-    public static final String PRODUCTS_TO_LOWERCASE = "products";
-    public static final String PRODUCT_TO_LOWERCASE = "product";
+    public static final String PRODUCTS_TO_LOWERCASE = "productos";
+    public static final String PRODUCT_TO_LOWERCASE = "producto";
     public static final String PRODUCT_ID = "productId";
     public static final String CATEGORY_NAME = "categoryName";
 
