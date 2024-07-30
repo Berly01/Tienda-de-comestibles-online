@@ -158,6 +158,16 @@ Un pedido entregado puede ser adquirido por el destinatario del pedido haciendo 
 Los recibos son solo entidades de datos. Se crean cuando un Pedido es Adquirido por su Usuario Destinatario.
 
 ## Pruebas de APIs (Postman)
+
+PRUEBAS DE APIS:
+Este proyecto registra usuarios, administrar productos y categorías, maneja pedidos y ofrece funciones como la creación de ofertas para productos con descuento aleatorio. Estas son algunas de las API y funcionalidades clave utilizadas en el proyecto:
+
+API de gestión de usuarios: maneja el registro de usuarios, el inicio de sesión, la asignación de roles y la gestión de perfiles. Los usuarios pueden tener roles como "Administrador raíz", "Administrador", "Moderador" o "Usuario", cada uno con permisos específicos.
+Registro:
+Probar el endpoint de registro de usuario
+
+
+
 ## Pruebas de Rendimiento (jMeter)
 ## Pruebas de Seguridad (Zap)
 ## Gestión de Cambios – Issues (Trello)
