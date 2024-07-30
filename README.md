@@ -162,10 +162,25 @@ Los recibos son solo entidades de datos. Se crean cuando un Pedido es Adquirido 
 PRUEBAS DE APIS:
 Este proyecto registra usuarios, administrar productos y categorías, maneja pedidos y ofrece funciones como la creación de ofertas para productos con descuento aleatorio. Estas son algunas de las API y funcionalidades clave utilizadas en el proyecto:
 
-API de gestión de usuarios: maneja el registro de usuarios, el inicio de sesión, la asignación de roles y la gestión de perfiles. Los usuarios pueden tener roles como "Administrador raíz", "Administrador", "Moderador" o "Usuario", cada uno con permisos específicos.
+# API de gestión de usuarios: maneja el registro de usuarios, el inicio de sesión, la asignación de roles y la gestión de perfiles. Los usuarios pueden tener roles como "Administrador raíz", "Administrador", "Moderador" o "Usuario", cada uno con permisos específicos.
 Registro:
 Probar el endpoint de registro de usuario
+![image](https://github.com/user-attachments/assets/97175fc3-3e2a-4c83-8323-966b79a6dcbf)
+Capturamos la solicitud:
+![image](https://github.com/user-attachments/assets/f0334346-f212-426a-b861-82ee7738ff19)
+Obtenemos un resultado exitoso con respecto a nuestra request
+![image](https://github.com/user-attachments/assets/ee2dfcd4-d733-4b0b-99e4-98ad73a3df3d)
+# API de gestión de productos: permite a los administradores administrar productos, incluida la creación, actualización y eliminación de listados de productos. Los productos están asociados con categorías y tienen atributos como nombre, descripción, precio y URL de imagen.
 
+Comprobamos el status al momento de seleccionar un producto 
+Se envia el codigo del producto y la cantidad a solicitar
+![image](https://github.com/user-attachments/assets/d7a96596-649a-4cf5-8e47-0cfc12f737ba)
+![image](https://github.com/user-attachments/assets/427f6de7-4f5c-4045-9fe1-390fd09bdb3e)
+Recibimos un status 200 
+![image](https://github.com/user-attachments/assets/6387ac71-ed3d-4fd2-afeb-f0e86a175bce)
+# API de gestión de pedidos: administra el ciclo de vida de un pedido desde su creación hasta su finalización. Los usuarios pueden crear pedidos, ver sus pedidos y los administradores pueden enviar, entregar y ver los detalles de los pedidos.
+Podemos ver los productos solicitados anteriormente
+![image](https://github.com/user-attachments/assets/2a356b8c-3062-4c3f-9b3e-51a963fb530c)
 
 
 ## Pruebas de Rendimiento (jMeter)
