@@ -167,6 +167,7 @@ maneja el registro de usuarios, el inicio de sesión, la asignación de roles y 
 
 Registro:
 Probar el endpoint de registro de usuario
+
 ![image](https://github.com/user-attachments/assets/97175fc3-3e2a-4c83-8323-966b79a6dcbf)
 
 Capturamos la solicitud:
