@@ -10,11 +10,21 @@ Una tienda de comestibles online es un sistema que registra usuarios, categoría
 
 | Tecnologia  | Versión |
 | ------------- | ------------- |
-| Java | 21  |
+| Java | JDK21  |
 | Maven | 4.0.0 |
 | Spring boot  | 2.7.18  |
 | Thymeleaf    | 3.1 |
 | Mysql | 8.0.33 |
+| Mysql-connector-java | 8.0.33 |
+
+## Herramientas Extras
+* ModelMapper
+* Cloudinary 
+
+## Entorno de ejecución
+* Windows 10 x64
+* Spring Tool Suite - 4
+* Java - 21.0.3
 
 ## Domain Driven Design
 
@@ -155,4 +165,6 @@ Los recibos son solo entidades de datos. Se crean cuando un Pedido es Adquirido 
 
 https://trello.com/b/5EylDJmu
 ## Documentación de Servicios en base al estándar OpenAPI y
+
+## ScreenShots
   
