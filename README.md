@@ -1,27 +1,158 @@
-# Resumen de la Arquitectura
-### Framework de Backend:
-La aplicación utiliza el framework Spring MVC para manejar las solicitudes web y gestionar la lógica de negocio.
 
-### Gestión de Base de Datos:
-Utiliza repositorios para interactuar con la base de datos, aprovechando Spring Data JPA para las operaciones de base de datos.
+# Tienda de Comestibles Online
 
-### Seguridad:
-Se emplea Spring Security para la autenticación y autorización. Los usuarios tienen roles como "Usuario", "Moderador", "Admin" y "Root Admin", cada uno con diferentes niveles de acceso.
+Una tienda de comestibles online es un sistema que registra usuarios, categorías, productos, gestiona pedidos y crea ofertas para productos con descuento aleatorios que cambian después de un tiempo determinado
 
-### Tareas Programadas:
-La aplicación utiliza la anotación @Scheduled en Spring para crear y actualizar ofertas de descuento a intervalos regulares.
+## Propósito del proyecto
+
+
+## Tecnologías 
+
+| Tecnologia  | Versión |
+| ------------- | ------------- |
+| Java | 21  |
+| Maven | 4.0.0 |
+| Spring boot  | 2.7.18  |
+| Thymeleaf    | 3.1 |
+| Mysql | 8.0.33 |
+
+## Domain Driven Design
+
+Entidades: Category, Offer, Order, OrderProduct, Product, Receipt, Role, User.
+
+Objetos de valor:
+
+Fabricas: 
+
+Repositorios: CategoryRepository, OfferRepository, OrderRepository, ProductRepository, ReceiptRepository, 
+UserRepository, UserRoleRepository.
+
+Servicios: CategoryServiceImpl, OfferServiceImpl, 
+OrderServiceImpl, ProductServiceImpl, ReceiptServiceImpl, UserServiceImpl.
+
+### Representacion en Arquitectura en Capas
+![image](https://github.com/user-attachments/assets/644b6e1c-481a-484f-8ad1-b157fb02c61b)
+
+## Patrón de Arquitectura
 
 ### Modelo-Vista-Controlador (MVC):
-La aplicación sigue el patrón de diseño MVC, separando las preocupaciones en diferentes capas:
-- **Modelo**: Representa los datos y la lógica de negocio.
-- **Vista**: Maneja la presentación de los datos (normalmente plantillas JSP o Thymeleaf).
-- **Controlador**: Gestiona la entrada del usuario y actualiza el modelo y la vista en consecuencia.
 
-### Componentes Clave
-- **Gestión de Usuarios**: Incluye registro, inicio de sesión, gestión de roles y gestión de perfiles.
-- **Gestión de Productos**: Permite agregar, actualizar y visualizar productos, categorizados adecuadamente.
-- **Gestión de Pedidos**: Los usuarios pueden crear pedidos y los administradores pueden gestionar el ciclo de vida del pedido (pendiente, enviado, entregado, adquirido).
-- **Ofertas**: Creación dinámica de descuentos de productos para aumentar el compromiso de los usuarios y las ventas.
+La aplicación sigue el patrón de diseño MVC, separando las preocupaciones en diferentes capas:
+
+Modelo: Representa los datos y la lógica de negocio.
+
+Vista: Maneja la presentación de los datos (Thymeleaf para este proyecto).
+
+Controlador: Gestiona la entrada del usuario y actualiza el modelo y la vista en consecuencia.
+
+### Representacion gráfica
+
+## Principios SOLID
+
+
+
+```java
+
+
+```
+## Funcionalidades
+
+### User
+Los usuarios pueden agregar productos a su "Carrito" y luego pueden revisar productos y crear pedidos con el estado "Pendiente". Los pedidos de los usuarios son controlados por los administradores (rol = "Administrador" o "Moderador"). Los usuarios pueden ver detalles sobre sus propios pedidos. Cuando se entrega un pedido, un usuario puede adquirirlo, momento en el que se crea un recibo con ese pedido y ese usuario. Los usuarios pueden ver sus recibos y detalles sobre cada recibo. Los administradores (rol = "Administrador", "Moderador") son esencialmente como los usuarios normales. También pueden tener pedidos, que se entregan, adquieren y también tienen recibos. Los administradores también pueden administrar pedidos para un usuario específico.
+
+* Pueden ver todos los pedidos pendientes y pueden enviarlos.
+* Pueden ver todos los pedidos enviados y entregarlos.
+* Pueden ver todos los pedidos entregados y ver detalles sobre ellos.
+
+La aplicación proporciona a los usuarios invitados (no registrados) la funcionalidad para:
+
+* Iniciar sesión
+* Registrarse
+* Ver la página de índice de invitados con productos de venta
+
+La aplicación proporciona a los usuarios (registrados) la funcionalidad para:
+
+* Cerrar sesión
+* Comprar productos
+* Crear pedidos
+* Ver sus pedidos
+* Ver detalles sobre un pedido
+* Ver sus recibos
+* Ver detalles sobre un recibo
+
+La aplicación proporciona a los moderadores (que han iniciado sesión y tienen el rol de Moderador) la funcionalidad de:
+
+* Cerrar sesión
+* Administrar todos los productos
+* Administrar todas las categorías
+* Comprar productos
+* Crear pedidos
+* Ver sus pedidos
+* Ver detalles sobre un pedido
+* Ver sus recibos
+* Ver detalles sobre un recibo
+* Ver todos los pedidos pendientes
+* Ver todos los pedidos enviados
+* Ver todos los pedidos entregados
+* Ver detalles sobre todos los pedidos entregados
+* Enviar pedidos
+* Entregar pedidos
+
+La aplicación proporciona a los administradores (que han iniciado sesión y tienen el rol de administrador) la funcionalidad para:
+
+* Cerrar sesión
+* Administrar todos los productos
+* Administrar todas las categorías
+* Comprar productos
+* Crear pedidos
+* Ver sus pedidos
+* Ver detalles sobre un pedido
+* Ver sus recibos
+* Ver detalles sobre un recibo
+* Ver todos los pedidos pendientes
+* Ver todos los pedidos enviados
+* Ver todos los pedidos entregados
+* Ver detalles sobre todos los pedidos entregados
+* Enviar pedidos
+* Entregar pedidos
+
+### Productos
+Los productos se crean con un Nombre, una Descripción, un Precio, una URL de Imagen (Nube) y Categorías a las que pertenece.
+
+### Ofertas
+Las ofertas se crean aleatoriamente utilizando la anotación @Scheduled en Spring con un producto aleatorio y un nuevo precio con descuento.
+
+### Pedidos
+Cuando se crean Pedidos, se crean con una lista de Productos, un Precio Total, una Dirección de Envío y un Usuario Destinatario.
+
+* Tras la creación, el estado de un pedido debe establecerse en Pendiente.
+* Tras la creación, la fecha de emisión de una orden debe establecerse en la fecha actual.
+
+#### Pedido pendientes
+Un pedido pendiente puede ser enviado por un administrador haciendo clic en el botón [Enviar] en la página de pedidos pendientes. En ese momento, el estado del pedido pasa a ser "Enviado" y la fecha del estado (enviado el) debe establecerse en una fecha actual.
+
+* Todas las Órdenes Pendientes se presentan en la Página de Órdenes Pendientes.
+* Un usuario puede ver sus Órdenes pendientes en su página Mis órdenes en el bloque rectangular Pendiente.
+* Un Usuario puede ver detalles sobre cada una de sus Órdenes Pendientes desde su Página Mis Órdenes, haciendo clic en el botón [Detalles].
+
+#### Pedidos enviados
+Un pedido enviado puede ser entregado por un administrador haciendo clic en el botón [Entregar] en la página pedido enviados. En ese momento, el Estado del pedido pasa a ser "Entregado" y la Fecha de estado (Entregado el) debe establecerse en una fecha actual.
+
+* Todos los pedidos enviados se presentan en la página de paquetes enviados.
+* Un usuario puede ver sus pedidos enviados en su página de índice en el bloque rectangular enviado.
+* Un Usuario puede ver detalles sobre cada uno de sus pedidos Enviados desde su Página de Índice, haciendo clic en el botón [Detalles].
+
+#### Pedidos entregados
+Un pedido entregado puede ser adquirido por el destinatario del pedido haciendo clic en el botón [Adquirir] en su página Mis pedidos. En ese momento el Estado del Pedido pasa a ser "Adquirido" y se genera un Recibo al Usuario por ese Pedido. Todos los pedidos entregados se presentan en la página de pedidos entregados. Un Usuario puede ver sus Pedidos Entregados en su Página Mis Pedidos en el bloque rectangular Entregado. Un Usuario puede Adquirir cada uno de sus Pedidos Entregados desde su Página Mis Pedidos, haciendo clic en el botón [Adquirir].
+
+### Recibos
+Los recibos son solo entidades de datos. Se crean cuando un Pedido es Adquirido por su Usuario Destinatario.
+
+## Pruebas de APIs (Postman)
+## Pruebas de Rendimiento (jMeter)
+## Pruebas de Seguridad (Zap)
+## Gestión de Cambios – Issues (Trello)
+
+https://trello.com/b/5EylDJmu
+## Documentación de Servicios en base al estándar OpenAPI y
   
-### Modelo de Arquitectura en Capas
-![image](https://github.com/user-attachments/assets/644b6e1c-481a-484f-8ad1-b157fb02c61b)
