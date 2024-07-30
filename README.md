@@ -228,11 +228,11 @@ https://trello.com/b/5EylDJmu
 
 * Soporte al cliente: El modelo bpmn permite al usuario consultar informacion al soporte de cliente, cual se divide en 2 niveles, nivel general y tecnico.
 
+![soporte-cliente-2 0](https://github.com/user-attachments/assets/4dd12d56-cf3b-4d85-bcd4-2605e200772c)
+
 ### Elementos de información necesarios (datos o información) en el proceso de negocio.
 
 * Servicios del proyecto de IS3 (Consultar ofertas, Consultar productos)
-
-### Modelo de Datos: Diagrama de Clases UML
 
 ### Variables
 
