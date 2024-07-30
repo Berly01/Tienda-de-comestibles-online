@@ -162,10 +162,13 @@ Los recibos son solo entidades de datos. Se crean cuando un Pedido es Adquirido 
 PRUEBAS DE APIS:
 Este proyecto registra usuarios, administrar productos y categorías, maneja pedidos y ofrece funciones como la creación de ofertas para productos con descuento aleatorio. Estas son algunas de las API y funcionalidades clave utilizadas en el proyecto:
 
-### API de gestión de usuarios: maneja el registro de usuarios, el inicio de sesión, la asignación de roles y la gestión de perfiles. Los usuarios pueden tener roles como "Administrador raíz", "Administrador", "Moderador" o "Usuario", cada uno con permisos específicos.
+### API de gestión de usuarios: 
+maneja el registro de usuarios, el inicio de sesión, la asignación de roles y la gestión de perfiles. Los usuarios pueden tener roles como "Administrador raíz", "Administrador", "Moderador" o "Usuario", cada uno con permisos específicos.
+
 Registro:
 Probar el endpoint de registro de usuario
 ![image](https://github.com/user-attachments/assets/97175fc3-3e2a-4c83-8323-966b79a6dcbf)
+
 Capturamos la solicitud:
 
 ![image](https://github.com/user-attachments/assets/f0334346-f212-426a-b861-82ee7738ff19)
