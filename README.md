@@ -222,6 +222,8 @@ https://trello.com/b/5EylDJmu
 
 # Supermercado BPMN Bonita
 
+https://github.com/Berly01/Supermercado-BPMN.git
+
 # Modelos de Procesos de Negocio para supermercado según Notación BPMN
 
 ## Nombre de proceso: Modelo y Descripción del modelo
