@@ -167,22 +167,28 @@ Registro:
 Probar el endpoint de registro de usuario
 ![image](https://github.com/user-attachments/assets/97175fc3-3e2a-4c83-8323-966b79a6dcbf)
 Capturamos la solicitud:
+
 ![image](https://github.com/user-attachments/assets/f0334346-f212-426a-b861-82ee7738ff19)
 Obtenemos un resultado exitoso con respecto a nuestra request
+
 ![image](https://github.com/user-attachments/assets/ee2dfcd4-d733-4b0b-99e4-98ad73a3df3d)
 # API de gestión de productos: permite a los administradores administrar productos, incluida la creación, actualización y eliminación de listados de productos. Los productos están asociados con categorías y tienen atributos como nombre, descripción, precio y URL de imagen.
 
 Comprobamos el status al momento de seleccionar un producto 
 Se envia el codigo del producto y la cantidad a solicitar
+
 ![image](https://github.com/user-attachments/assets/d7a96596-649a-4cf5-8e47-0cfc12f737ba)
 ![image](https://github.com/user-attachments/assets/427f6de7-4f5c-4045-9fe1-390fd09bdb3e)
 Recibimos un status 200 
+
 ![image](https://github.com/user-attachments/assets/6387ac71-ed3d-4fd2-afeb-f0e86a175bce)
 # API de gestión de pedidos: administra el ciclo de vida de un pedido desde su creación hasta su finalización. Los usuarios pueden crear pedidos, ver sus pedidos y los administradores pueden enviar, entregar y ver los detalles de los pedidos.
 Podemos ver los productos solicitados anteriormente
+
 ![image](https://github.com/user-attachments/assets/2a356b8c-3062-4c3f-9b3e-51a963fb530c)
 ![image](https://github.com/user-attachments/assets/31f4cc46-7f00-426c-b91c-5154452671c3)
 API de busqueda de productos: La anotación @GetMapping("/api/find") en el método searchProducts en el UserController define un endpoint de API de búsqueda. Este endpoint permite a los usuarios buscar productos basados en una parte del nombre del producto.
+
 ![image](https://github.com/user-attachments/assets/56d24e61-cdc7-4255-b10c-a7738f5da978)
 ![image](https://github.com/user-attachments/assets/2cd544da-2c17-40e8-afcb-c5b8dc3e55e4)
 
@@ -192,6 +198,7 @@ Configuración de seguridad: implementa Spring Security para gestionar la autent
 
 Esta tabla muestra el número de alertas de cada tipo de alerta, junto con el nivel de riesgo del tipo de alerta.
 (Los porcentajes entre paréntesis representan cada recuento como un porcentaje, redondeado a un decimal, del número total de alertas incluidas en este informe).
+
 ![image](https://github.com/user-attachments/assets/c55b1a3d-f24c-4418-84f4-ed99124e79e0)
 
 ## Gestión de Cambios – Issues (Trello)
