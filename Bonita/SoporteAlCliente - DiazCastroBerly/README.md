@@ -32,5 +32,5 @@ El modelo BPMN permite al usuario consultar al soporte de cliente, cual se divid
 
 ## Elementos de información necesarios (datos o información) en el proceso de negocio.
 Servicios del proyecto de IS3 mediante RestAPI.
-* Consultar ofertas: http://localhost:8000/products/fetch
-* Consultar productos: http://localhost:8000/offers/fetch
+* Consultar productos: http://localhost:8000/products/fetch
+* Consultar ofertas: http://localhost:8000/offers/fetch
