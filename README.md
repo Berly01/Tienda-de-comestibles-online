@@ -53,17 +53,16 @@ OrderServiceImpl, ProductServiceImpl, ReceiptServiceImpl, UserServiceImpl.
 ## Principios SOLID
 
 ### Principio de responsabilidad única (SRP)
-
 Entidad User: Debe contener solo los datos y comportamientos directamente relacionados con la entidad User (por ejemplo, nombre, apellido, correo electrónico, etc.).
-
 UserServiceImpl: Debe manejar la lógica de negocio relacionada con los usuarios, como crear, actualizar, eliminar y recuperar usuarios.
+Al separar la entidad User del UserServiceImpl, se asegura que cada clase tenga una única responsabilidad bien definida, mejorando la cohesión y facilitando el mantenimiento.
 
 ### Principio de apertura y cierre (OCP)
+Las clases deben estar abiertas para la extensión, pero cerradas para la modificación.
+Separar la lógica de negocio en UserServiceImpl permite extender la funcionalidad relacionada con los usuarios sin modificar la entidad User. Por ejemplo, se pueden añadir nuevos métodos en UserServiceImpl sin cambiar la estructura de la entidad User.
 
-Separar la lógica de negocio en UserService permite extender la funcionalidad relacionada con los usuarios sin modificar la entidad User. Por ejemplo, se pueden añadir nuevos métodos en UserServiceImpl sin cambiar la estructura de la entidad User.
-
-### Principio de inversión de dependencia
-Las clases deben depender de interfaces o clases abstractas en lugar de clases y funciones concretas.
+### Principio de inversión de dependencia (DIP)
+Las clases deben depender de interfaces o clases abstractas en lugar de clases y funciones concretas. Las clases como User, Product, Category, etc, heredan y depende de la clase abstracta BaseEntity. Tambien algunas clases como UserController, ProductController, dependen de la clase abstracta BaseController.
 
 #### BaseEntity.java
 ```java
@@ -89,20 +88,23 @@ public abstract class BaseEntity {
 ```
 #### UserService.java
 ```java
-public interface UserService {
+public abstract class BaseController {
+	
+    protected ModelAndView view(String view, ModelAndView modelAndView) {
+       
+    	modelAndView.setViewName(view);
+        return modelAndView;
+    }
 
-    UserServiceModel register(UserServiceModel userServiceModel);
+    protected ModelAndView view(String view) {
+        return this.view(view, new ModelAndView());
+    }
 
-    List<UserServiceModel> findAllUsers();
-
-    UserServiceModel findByUsername(String username);
-
-    UserServiceModel findById(String id);
-
-    void updateRole(String id, String role);
-
-    UserServiceModel findUserByUserName(String name);
+    protected ModelAndView redirect(String url){
+        return this.view(REDIRECT_BASE_CONTROLLER + url);
+    }
 }
+
 ```
 #### User.java
 ```java
@@ -328,6 +330,129 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 }
 ```
+
+#### UserController.java
+```java
+@RestController
+public class UserController extends BaseController {
+
+    private final UserService userService;
+    private final ModelMapper modelMapper;
+
+    public UserController(UserService userService, ModelMapper modelMapper) {
+        this.userService = userService;
+        this.modelMapper = modelMapper;
+    }
+
+    @GetMapping("/register")
+    @PreAuthorize("isAnonymous()")
+    @PageTitle(REGISTER)
+    public ModelAndView renderRegister(@ModelAttribute(name = MODEL) UserRegisterBindingModel model,
+                                       ModelAndView modelAndView) {
+
+        modelAndView.addObject(MODEL, model);
+
+        return view("register", modelAndView);
+    }
+
+    @PostMapping("/register")
+    public ModelAndView register(@Valid @ModelAttribute(name = MODEL) UserRegisterBindingModel model,
+                                 BindingResult bindingResult, ModelAndView modelAndView) {
+
+        if (!model.getPassword().equals(model.getConfirmPassword()) || bindingResult.hasErrors() ||
+                this.userService.register(modelMapper.map(model, UserServiceModel.class))==null) {
+
+            modelAndView.addObject(MODEL, model);
+
+            return view("register", modelAndView);
+        }
+        return redirect("/login");
+    }
+
+    @GetMapping("/login")
+    @PreAuthorize("isAnonymous()")
+    @PageTitle(LOGIN)
+    public ModelAndView login(@RequestParam(required = false) String error, ModelAndView modelAndView) {
+        if (error != null) {
+            modelAndView.addObject(ERROR, "Error");
+        }
+
+        return view("/login", modelAndView);
+    }
+
+    @GetMapping("/user/profile/{username}")
+    @PreAuthorize("isAuthenticated()")
+    @PageTitle(USER_PROFILE)
+    public ModelAndView renderProfilePageByUsername(@PathVariable
+                                                                String username, ModelAndView modelAndView) {
+        UserServiceModel userServiceModel = this.userService.findByUsername(username);
+        UsersViewModel usersViewModel = this.modelMapper.map(userServiceModel, UsersViewModel.class);
+        modelAndView.addObject(VIEW_MODEL, usersViewModel);
+
+        return view("/profile", modelAndView);
+    }
+
+    @GetMapping("/admin/users")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PageTitle(USERS)
+    public ModelAndView renderAllUsersPage() {
+        return view("/users-all");
+    }
+
+    @PostMapping("/users/edit/role/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ModelAndView updateUserRole(@PathVariable String id, String role, Principal principal) {
+
+        UserServiceModel currentLoggedUser = this.userService.findByUsername(principal.getName());
+        UserServiceModel targetUser = userService.findById(id);
+        
+        if (role == null){
+            return redirect("/user/profile/" + targetUser.getUsername());
+        }
+        if (currentLoggedUser.getId().equals(id)) {
+            return redirect("/user/profile/" + principal.getName());
+        }
+
+        try {
+            this.userService.updateRole(id, role);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+
+        return redirect("/user/profile/" + targetUser.getUsername());
+    }
+
+    @GetMapping("/api/users")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public List<UsersViewModel> allUsers() {
+
+        return this.userService.findAllUsers()
+                .stream()
+                .map(serviceModel -> this.modelMapper.map(serviceModel, UsersViewModel.class))
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/api/users/find")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public UsersViewModel allUsers(@RequestParam(USERNAME) String username) {
+
+        UserServiceModel byUsername = this.userService.findByUsername(username);
+
+        return byUsername == null ? new UsersViewModel()
+                : this.modelMapper.map(byUsername, UsersViewModel.class);
+    }
+
+    private String htmlEscape(String input){
+        input = input.replace("&", "&amp;")
+              .replace("<", "&lt;")
+              .replace(">", "&gt;")
+              .replace("\"", "&quot;");
+
+        return input;
+    }
+}
+```
+
 #### Product.java
 ```java
 @Entity
