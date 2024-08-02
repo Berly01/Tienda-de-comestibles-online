@@ -991,7 +991,7 @@ Un pedido entregado puede ser adquirido por el destinatario del pedido haciendo 
 ### Recibos
 Los recibos son solo entidades de datos. Se crean cuando un Pedido es Adquirido por su Usuario Destinatario.
 
-## Pruebas de APIs (Postman)
+## Pruebas de APIs (BURP SITE)
 
 PRUEBAS DE APIS:
 Este proyecto registra usuarios, administrar productos y categorías, maneja pedidos y ofrece funciones como la creación de ofertas para productos con descuento aleatorio. Estas son algunas de las API y funcionalidades clave utilizadas en el proyecto:
