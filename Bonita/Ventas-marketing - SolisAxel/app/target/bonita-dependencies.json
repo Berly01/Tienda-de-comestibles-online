@@ -1,0 +1,25 @@
+{
+  "connectorImplementations" : [ ],
+  "filterImplementations" : [ ],
+  "connectorDefinitions" : [ ],
+  "filterDefinitions" : [ ],
+  "restApiExtensions" : [ ],
+  "pages" : [ ],
+  "forms" : [ ],
+  "themes" : [ ],
+  "applicationDescriptors" : [ {
+    "displayName" : "Bonita Administrator Application",
+    "version" : "6.0",
+    "description" : "This application allows to deploy and manage all the elements of Bonita projects.",
+    "profile" : "Administrator",
+    "appToken" : "adminAppBonita",
+    "artifact" : {
+      "groupId" : "org.bonitasoft.web.application",
+      "artifactId" : "bonita-admin-application",
+      "version" : "9.0.0",
+      "classifier" : "application",
+      "file" : "C:\\Users\\User\\.m2\\repository\\org\\bonitasoft\\web\\application\\bonita-admin-application\\9.0.0\\bonita-admin-application-9.0.0-application.zip"
+    }
+  } ],
+  "issues" : [ ]
+}

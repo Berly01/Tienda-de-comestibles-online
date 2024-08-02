@@ -1,0 +1,6 @@
+#FileLock
+#Tue Jul 30 14:54:50 COT 2024
+server=192.168.1.5\:62215
+hostName=192.168.1.5
+method=file
+id=1910535b0d782b5017e56a74180a208b7e92d5f7974
