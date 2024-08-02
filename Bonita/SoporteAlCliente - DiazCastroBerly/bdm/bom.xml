@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<businessObjectModel xmlns="http://documentation.bonitasoft.com/bdm-xml-schema/1.0" modelVersion="1.0">
+    <businessObjects>
+        <businessObject qualifiedName="com.company.model.Cliente">
+            <fields>
+                <field type="STRING" length="255" name="correo" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="numeroTelefono" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="informacionValida" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="numeroCuenta" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.company.model.Consulta">
+            <fields>
+                <field type="LONG" length="255" name="consultaId" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="asunto" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="mensaje" nullable="false" collection="false"/>
+                <field type="BOOLEAN" length="255" name="esValido" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="derivar" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="necesitaInformacionExtra" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="tipoProblema" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.company.model.Oferta">
+            <fields>
+                <relationField type="AGGREGATION" reference="com.company.model.ProductoDetalles" fetchType="LAZY" name="product" nullable="true" collection="false"/>
+                <field type="DOUBLE" length="255" name="price" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.company.model.Producto">
+            <fields>
+                <field type="STRING" length="255" name="id" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="name" nullable="true" collection="false"/>
+                <field type="DOUBLE" length="255" name="price" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="imageUrl" nullable="true" collection="false"/>
+                <field type="DOUBLE" length="255" name="discountedPrice" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.company.model.ProductoDetalles">
+            <fields>
+                <field type="STRING" length="255" name="id" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="name" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="description" nullable="true" collection="false"/>
+                <field type="DOUBLE" length="255" name="price" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="imageUrl" nullable="true" collection="false"/>
+                <field type="DOUBLE" length="255" name="discountedPrice" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.company.model.Solucion">
+            <fields>
+                <field type="STRING" length="255" name="consultaId" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="mensaje" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="asunto" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+    </businessObjects>
+</businessObjectModel>

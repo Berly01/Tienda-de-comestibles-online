@@ -1,0 +1,276 @@
+{
+  "id" : "nuevaConsultaFragmento",
+  "name" : "nuevaConsultaFragmento",
+  "type" : "fragment",
+  "modelVersion" : "2.6",
+  "lastUpdate" : 1722363694619,
+  "rows" : [
+    [
+      {
+        "type" : "component",
+        "dimension" : {
+          "xs" : 12,
+          "sm" : 12,
+          "md" : 12,
+          "lg" : 12
+        },
+        "propertyValues" : {
+          "cssClasses" : {
+            "type" : "constant",
+            "value" : ""
+          },
+          "hidden" : {
+            "type" : "constant",
+            "value" : false
+          },
+          "disabled" : {
+            "type" : "constant",
+            "value" : false
+          },
+          "required" : {
+            "type" : "constant",
+            "value" : false
+          },
+          "allowHTML" : {
+            "type" : "constant",
+            "value" : false
+          },
+          "labelHidden" : {
+            "type" : "constant",
+            "value" : false
+          },
+          "label" : {
+            "type" : "interpolation",
+            "value" : "Asunto"
+          },
+          "labelPosition" : {
+            "type" : "constant",
+            "value" : "top"
+          },
+          "labelWidth" : {
+            "type" : "constant",
+            "value" : 4
+          },
+          "inline" : {
+            "type" : "constant",
+            "value" : false
+          },
+          "availableValues" : {
+            "type" : "constant",
+            "value" : [
+              "consulta productos",
+              "consulta ofertas",
+              "otro"
+            ]
+          },
+          "displayedKey" : {
+            "type" : "constant",
+            "value" : "asuntoId"
+          },
+          "returnedKey" : {
+            "type" : "expression"
+          },
+          "selectedValue" : {
+            "type" : "variable"
+          }
+        },
+        "reference" : "99ebf824-b964-4648-b73b-ae182ab285c0",
+        "hasValidationError" : false,
+        "id" : "pbRadioButtons"
+      }
+    ],
+    [
+      {
+        "type" : "component",
+        "dimension" : {
+          "md" : 12,
+          "sm" : 12,
+          "xs" : 12,
+          "lg" : 12
+        },
+        "propertyValues" : {
+          "labelHidden" : {
+            "type" : "constant",
+            "value" : false
+          },
+          "hidden" : {
+            "type" : "constant",
+            "value" : false
+          },
+          "labelPosition" : {
+            "type" : "constant",
+            "value" : "top"
+          },
+          "cssClasses" : {
+            "type" : "constant",
+            "value" : ""
+          },
+          "labelWidth" : {
+            "type" : "constant",
+            "value" : 1
+          },
+          "readOnly" : {
+            "type" : "constant",
+            "value" : false
+          },
+          "label" : {
+            "type" : "interpolation",
+            "value" : "Asunto"
+          },
+          "placeholder" : {
+            "type" : "constant"
+          },
+          "type" : {
+            "type" : "constant",
+            "value" : "text"
+          },
+          "dimension" : {
+            "type" : "constant",
+            "value" : 12
+          },
+          "value" : {
+            "type" : "variable",
+            "value" : "dataExt"
+          },
+          "required" : {
+            "type" : "constant",
+            "value" : true
+          },
+          "allowHTML" : {
+            "type" : "constant",
+            "value" : false
+          },
+          "minLength" : {
+            "type" : "constant",
+            "value" : ""
+          },
+          "maxLength" : {
+            "type" : "constant",
+            "value" : ""
+          },
+          "debounce" : {
+            "type" : "constant",
+            "value" : 0
+          },
+          "min" : {
+            "type" : "constant"
+          },
+          "max" : {
+            "type" : "constant"
+          },
+          "step" : {
+            "type" : "constant",
+            "value" : 1
+          }
+        },
+        "reference" : "d9a53725-05b9-4458-87b2-7f492dc301b3",
+        "hasValidationError" : false,
+        "id" : "pbInput",
+        "description" : ""
+      }
+    ],
+    [
+      {
+        "type" : "component",
+        "dimension" : {
+          "md" : 12,
+          "sm" : 12,
+          "xs" : 12,
+          "lg" : 12
+        },
+        "propertyValues" : {
+          "labelHidden" : {
+            "type" : "constant",
+            "value" : false
+          },
+          "hidden" : {
+            "type" : "constant",
+            "value" : false
+          },
+          "labelPosition" : {
+            "type" : "constant",
+            "value" : "top"
+          },
+          "cssClasses" : {
+            "type" : "constant",
+            "value" : ""
+          },
+          "labelWidth" : {
+            "type" : "constant",
+            "value" : 1
+          },
+          "readOnly" : {
+            "type" : "constant",
+            "value" : false
+          },
+          "label" : {
+            "type" : "interpolation",
+            "value" : "Mensaje"
+          },
+          "placeholder" : {
+            "type" : "constant"
+          },
+          "type" : {
+            "type" : "constant",
+            "value" : "text"
+          },
+          "dimension" : {
+            "type" : "constant",
+            "value" : 12
+          },
+          "value" : {
+            "type" : "variable",
+            "value" : "dataExt"
+          },
+          "required" : {
+            "type" : "constant",
+            "value" : true
+          },
+          "allowHTML" : {
+            "type" : "constant",
+            "value" : false
+          },
+          "minLength" : {
+            "type" : "constant",
+            "value" : ""
+          },
+          "maxLength" : {
+            "type" : "constant",
+            "value" : ""
+          },
+          "debounce" : {
+            "type" : "constant",
+            "value" : 0
+          },
+          "min" : {
+            "type" : "constant"
+          },
+          "max" : {
+            "type" : "constant"
+          },
+          "step" : {
+            "type" : "constant",
+            "value" : 1
+          }
+        },
+        "reference" : "5a892f8e-3eb6-42fe-a508-2756891f542e",
+        "hasValidationError" : false,
+        "id" : "pbInput",
+        "description" : ""
+      }
+    ]
+  ],
+  "variables" : {
+    "dataExt" : {
+      "type" : "constant",
+      "value" : [
+        ""
+      ],
+      "exposed" : true
+    }
+  },
+  "assets" : [ ],
+  "inactiveAssets" : [ ],
+  "webResources" : [ ],
+  "hasValidationError" : false
+}
