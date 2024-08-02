@@ -4,6 +4,7 @@ Una tienda de comestibles online es un sistema que registra usuarios, categoría
 
 ## Propósito del proyecto
 
+Desarrollar una tienda online para Tottus.
 
 ## Tecnologías 
 
@@ -39,23 +40,15 @@ UserRepository, UserRoleRepository.
 Servicios: CategoryServiceImpl, OfferServiceImpl, 
 OrderServiceImpl, ProductServiceImpl, ReceiptServiceImpl, UserServiceImpl.
 
-### Representacion en Arquitectura en Capas
+### Arquitectura en Capas, DDD y SOLID
 ![Main](https://github.com/user-attachments/assets/776d164f-fc7d-49ef-8b1b-97bfae6108d7)
-
 
 ## Patrón de Arquitectura
 
 ### Modelo-Vista-Controlador (MVC):
 
-La aplicación sigue el patrón de diseño MVC, separando las preocupaciones en diferentes capas:
+![111_page-0001](https://github.com/user-attachments/assets/065e8334-5c09-40e0-827f-7304bc890fb9)
 
-Modelo: Representa los datos y la lógica de negocio.
-
-Vista: Maneja la presentación de los datos (Thymeleaf para este proyecto).
-
-Controlador: Gestiona la entrada del usuario y actualiza el modelo y la vista en consecuencia.
-
-### Representacion gráfica
 
 ## Principios SOLID
 
