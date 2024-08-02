@@ -65,6 +65,7 @@ Separar la lógica de negocio en UserService permite extender la funcionalidad r
 ### Principio de inversión de dependencia
 Las clases deben depender de interfaces o clases abstractas en lugar de clases y funciones concretas.
 
+BaseEntity.java
 ```java
 @MappedSuperclass
 public abstract class BaseEntity {
@@ -84,6 +85,23 @@ public abstract class BaseEntity {
     public void setId(String id) {
         this.id = id;
     }
+}
+```
+
+```java
+public interface UserService {
+
+    UserServiceModel register(UserServiceModel userServiceModel);
+
+    List<UserServiceModel> findAllUsers();
+
+    UserServiceModel findByUsername(String username);
+
+    UserServiceModel findById(String id);
+
+    void updateRole(String id, String role);
+
+    UserServiceModel findUserByUserName(String name);
 }
 ```
 
