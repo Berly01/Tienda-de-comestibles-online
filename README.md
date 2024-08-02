@@ -86,7 +86,7 @@ public abstract class BaseEntity {
     }
 }
 ```
-#### UserService.java
+#### BaseController.java
 ```java
 public abstract class BaseController {
 	
