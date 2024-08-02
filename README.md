@@ -705,9 +705,198 @@ public class ProductServiceImpl implements ProductService {
 ## Clean Code
 
 * Nombres con significado
+#### OfferServiceImpl
+``` java
+@Service
+public class OfferServiceImpl implements OfferService {
+
+    private final OfferRepository offerRepository;
+    private final ProductService productService;
+    private final ModelMapper modelMapper;
+    private Random rnd = new Random();
+    
+    public OfferServiceImpl(OfferRepository offerRepository, ProductService productService, ModelMapper modelMapper) {
+        this.offerRepository = offerRepository;
+        this.productService = productService;
+        this.modelMapper = modelMapper;
+    }
+
+    @Override
+    public List<OfferServiceModel> findAllOffers() {
+        return this.offerRepository.findAll().stream()
+                .map(o -> this.modelMapper.map(o, OfferServiceModel.class))
+                .collect(Collectors.toList());
+    }
+
+    @Scheduled(fixedRate = OFFER_SCHEDULED_FIX_RATE)
+    private void generateOffers() {
+        this.offerRepository.deleteAll();
+        List<ProductServiceModel> products = this.productService
+                .findAllProducts().stream()
+                .filter(p->!p.isDeleted())
+                .filter(p->p.getCategories().stream().anyMatch(c->!c.isDeleted()))
+                .collect(Collectors.toList());
+
+        if (products.isEmpty()) {
+            return;
+        }
+
+        int n = products.size() > OFFER_SCHEDULED_NUMBER_OF_PRODUCTS? OFFER_SCHEDULED_NUMBER_OF_PRODUCTS : products.size();
+
+        List<Offer> offers = new ArrayList<>();
+        for (int i = ZERO_NUMBER; i < n; i++) {
+            Offer offer = new Offer();
+            offer.setProduct(this.modelMapper.map(products.get(rnd.nextInt(products.size())), Product.class));
+            offer.setPrice(offer.getProduct().getPrice().multiply(BigDecimal.valueOf(OFFER_SCHEDULED_DISCOUNT)));
+
+            if (offers.stream().filter(o -> o.getProduct().getId().equals(offer.getProduct().getId())).count() == ZERO_NUMBER) {
+                offers.add(offer);
+            }
+        }
+
+        this.offerRepository.saveAll(offers);
+    }
+}
+```
+
 * Funciones con una sola tarea
+#### CategoryServiceImpl.java
+``` java
+@Service
+public class CategoryServiceImpl implements CategoryService {
+
+    private final CategoryRepository categoryRepository;
+    private final ModelMapper modelMapper;
+    private final Validator validator;
+
+    public CategoryServiceImpl(CategoryRepository categoryRepository, ModelMapper modelMapper, Validator validator) {
+        this.categoryRepository = categoryRepository;
+        this.modelMapper = modelMapper;
+        this.validator = validator;
+    }
+
+    @Override
+    public CategoryServiceModel addCategory(CategoryServiceModel categoryServiceModel) {
+
+        if (!validator.validate(categoryServiceModel).isEmpty()) {
+            throw new CategoryNotFoundException();
+        }
+        Category category = this.modelMapper.map(categoryServiceModel, Category.class);
+
+        return this.modelMapper.map(this.categoryRepository.saveAndFlush(category),CategoryServiceModel.class);
+    }
+
+    @Override
+    public List<CategoryServiceModel> findAllCategories() {
+        return this.categoryRepository.findAll()
+                .stream()
+                .filter(c->!c.isDeleted())
+                .map(c -> this.modelMapper.map(c, CategoryServiceModel.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public CategoryServiceModel findCategoryById(String id) {
+        Category category = this.categoryRepository.findById(id)
+                .orElseThrow(CategoryNotFoundException::new);
+
+        if (category.isDeleted()){
+            throw new CategoryNotFoundException();
+        }
+
+        return this.modelMapper.map(category, CategoryServiceModel.class);
+    }
+
+    @Override
+    public CategoryServiceModel editCategory(String id, CategoryServiceModel categoryServiceModel) {
+        Category category = this.categoryRepository.findById(id)
+                .orElseThrow(CategoryNotFoundException::new);
+
+        category.setName(categoryServiceModel.getName());
+
+        return this.modelMapper.map(this.categoryRepository.saveAndFlush(category), CategoryServiceModel.class);
+    }
+
+    @Override
+    public CategoryServiceModel deleteCategory(String id) {
+        Category category = this.categoryRepository.findById(id)
+                .orElseThrow(CategoryNotFoundException::new);
+
+        category.setDeleted(true);
+        this.categoryRepository.save(category);
+
+        return this.modelMapper.map(category, CategoryServiceModel.class);
+    }
+
+    @Override
+    public List<CategoryServiceModel> findAllFilteredCategories() {
+        return findAllCategories().stream()
+                .filter(c->!c.isDeleted())
+                .collect(Collectors.toList());
+    }
+}
+```
 * Manejo de errores
 
+#### ProductServiceImpl.java
+``` java
+    @Override
+    public ProductServiceModel editProduct(String id, ProductServiceModel productServiceModel,
+                                           boolean isNewImageUploaded, MultipartFile image) throws IOException {
+        Product product = this.productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(PRODUCT_ID_DOESNT_EXIST_EX_MSG));
+       
+        if(!productValidation.isValid(productServiceModel)) {
+            throw new IllegalArgumentException(INVALID_PRODUCT_EX_MSG);       
+        }
+        
+        productServiceModel.setId(id);
+        Product update = modelMapper.map(productServiceModel, Product.class);
+
+        if (product == null || update == null){
+            throw new ProductNotFoundException(PRODUCT_ID_DOESNT_EXIST_EX_MSG);
+        }
+
+        if (isNewImageUploaded){
+            update.setImageUrl(this.cloudinaryService.uploadImage(image));
+        } else {
+            update.setImageUrl(product.getImageUrl());
+        }
+
+        this.offerRepository.findByProduct_Id(product.getId())
+                .ifPresent(o -> {
+                    o.setPrice(product.getPrice().multiply(BigDecimal.valueOf(OFFER_SCHEDULED_DISCOUNT)));
+                    this.offerRepository.save(o);
+                });
+
+        return this.modelMapper.map(this.productRepository.saveAndFlush(update), ProductServiceModel.class);
+    }
+```
+#### UserServiceImpl
+``` java
+    @PostMapping("/users/edit/role/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ModelAndView updateUserRole(@PathVariable String id, String role, Principal principal) {
+
+        UserServiceModel currentLoggedUser = this.userService.findByUsername(principal.getName());
+        UserServiceModel targetUser = userService.findById(id);
+        
+        if (role == null){
+            return redirect("/user/profile/" + targetUser.getUsername());
+        }
+        if (currentLoggedUser.getId().equals(id)) {
+            return redirect("/user/profile/" + principal.getName());
+        }
+
+        try {
+            this.userService.updateRole(id, role);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+
+        return redirect("/user/profile/" + targetUser.getUsername());
+    }
+```
 
 ## Funcionalidades
 
