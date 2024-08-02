@@ -702,6 +702,13 @@ public class ProductServiceImpl implements ProductService {
 }
 ```
 
+## Clean Code
+
+* Nombres con significado
+* Funciones con una sola tarea
+* Manejo de errores
+
+
 ## Funcionalidades
 
 ### User
