@@ -1,3 +1,12 @@
+#Integrantes
+
+* Diaz Castro BerLy Joel
+* Uscca Giraldo Jhonatan Bilbao
+* Caceres Cuba Jayan Michael
+* Montoya Choque Leoardo
+* Zhong Callasi Linghai Juaquin
+* Solis Zamata Axel Jhuan (Solo en  el curso de Desarrollo de software empresarial)
+
 # Tienda de Comestibles Online
 
 Una tienda de comestibles online es un sistema que registra usuarios, categorías, productos, gestiona pedidos y crea ofertas para productos con descuento aleatorios que cambian después de un tiempo determinado
