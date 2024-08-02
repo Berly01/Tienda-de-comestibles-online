@@ -52,7 +52,40 @@ OrderServiceImpl, ProductServiceImpl, ReceiptServiceImpl, UserServiceImpl.
 
 ## Principios SOLID
 
+### Principio de responsabilidad única (SRP)
 
+Entidad User: Debe contener solo los datos y comportamientos directamente relacionados con la entidad User (por ejemplo, nombre, apellido, correo electrónico, etc.).
+
+UserServiceImpl: Debe manejar la lógica de negocio relacionada con los usuarios, como crear, actualizar, eliminar y recuperar usuarios.
+
+### Principio de apertura y cierre (OCP)
+
+Separar la lógica de negocio en UserService permite extender la funcionalidad relacionada con los usuarios sin modificar la entidad User. Por ejemplo, se pueden añadir nuevos métodos en UserServiceImpl sin cambiar la estructura de la entidad User.
+
+### Principio de inversión de dependencia
+Las clases deben depender de interfaces o clases abstractas en lugar de clases y funciones concretas.
+
+```java
+@MappedSuperclass
+public abstract class BaseEntity {
+	
+    private String id;
+
+    protected BaseEntity() {}
+
+    @Id
+    @GeneratedValue(generator = UUID_STRING)
+    @GenericGenerator(name = UUID_STRING, strategy = UUID_GENERATOR)
+    @Column(name = "id", unique = true, nullable = false, updatable = false)
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+}
+```
 
 ```java
 @Entity
@@ -146,6 +179,382 @@ public class User extends BaseEntity implements UserDetails {
     @Transient
     public boolean isEnabled() {
         return true;
+    }
+}
+```
+
+```java
+@Service
+public class UserServiceImpl implements UserService, UserDetailsService {
+
+    private final UserRepository userRepository;
+    private final UserRoleRepository userRoleRepository;
+    private final ProductRepository productRepository;
+    private final ModelMapper modelMapper;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public UserServiceImpl(UserRepository userRepository,
+                           UserRoleRepository userRoleRepository,
+                           ProductRepository productRepository, ModelMapper modelMapper,
+                           BCryptPasswordEncoder bCryptPasswordEncoder) {
+        
+    	this.userRepository = userRepository;
+        this.userRoleRepository = userRoleRepository;
+        this.productRepository = productRepository;
+        this.modelMapper = modelMapper;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return this.userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(DEFAULT_USER_NOT_FOUND_EX_MSG));
+    }
+
+    @Override
+    public UserServiceModel register(UserServiceModel userServiceModel) {
+        User userEntity = this.modelMapper.map(userServiceModel, User.class);
+
+        String encodedPassword = bCryptPasswordEncoder.encode(userServiceModel.getPassword());
+        userEntity.setPassword(encodedPassword);
+        userEntity.setAuthorities(getRolesForRegistration());
+
+        return modelMapper.map(this.userRepository.saveAndFlush(userEntity), UserServiceModel.class);
+    }
+
+    @Override
+    public List<UserServiceModel> findAllUsers() {
+        return this.userRepository.findAll()
+                .stream()
+                .map(uEntity -> this.modelMapper.map(uEntity, UserServiceModel.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserServiceModel findByUsername(String username) {
+        User userEntity = this.userRepository.findByUsername(username).orElse(null);
+
+        return userEntity == null ? null
+                : this.modelMapper.map(userEntity, UserServiceModel.class);
+    }
+
+    @Override
+    public UserServiceModel findById(String id) {
+        User userEntity = this.userRepository.findById(id).orElse(null);
+
+        return userEntity == null ? null
+                : this.modelMapper.map(userEntity, UserServiceModel.class);
+    }
+
+    @Override
+    public void updateRole(String id, String role) {
+        User userEntity = this.userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException(DEFAULT_USER_NOT_FOUND_EX_MSG));
+
+        boolean isRootAdmin = userEntity.getAuthorities()
+                .stream()
+                .map(Role::getAuthority)
+                .collect(Collectors.toList())
+                .contains(ROOT_ADMIN);
+        if (isRootAdmin) {
+            throw new IllegalArgumentException(DEFAULT_NOT_AUTHORIZE_EX_MSG);
+        }
+
+        updateUserRole(userEntity, role);
+        this.userRepository.saveAndFlush(userEntity);
+    }
+
+    @Override
+    public UserServiceModel findUserByUserName(String username) {
+        return this.userRepository.findByUsername(username)
+                .map(u -> this.modelMapper.map(u, UserServiceModel.class))
+                .orElseThrow(() -> new UsernameNotFoundException(DEFAULT_USER_NOT_FOUND_EX_MSG));
+    }
+
+
+    private void updateUserRole(User userEntity, String role) {
+        Set<Role> newRole = new HashSet<>();
+        switch (role) {
+            case ROLE_USER:
+                newRole.add(this.userRoleRepository.findByAuthority(ROLE_USER));
+                break;
+            case ROLE_MODERATOR:
+                newRole.add(this.userRoleRepository.findByAuthority(ROLE_MODERATOR));
+                newRole.add(this.userRoleRepository.findByAuthority(ROLE_USER));
+                break;
+            case ROLE_ADMIN:
+                newRole.add(this.userRoleRepository.findByAuthority(ROLE_ADMIN));
+                newRole.add(this.userRoleRepository.findByAuthority(ROLE_MODERATOR));
+                newRole.add(this.userRoleRepository.findByAuthority(ROLE_USER));
+                break;        
+            default:
+            	System.exit(1);
+        }
+        userEntity.setAuthorities(newRole);
+    }
+
+	private Set<Role> getRolesForRegistration() {
+        Set<Role> roles = new HashSet<>();
+
+        if(this.userRepository.count() == 0) {
+            roles.add(this.userRoleRepository.findByAuthority(ROOT_ADMIN));
+            roles.add(this.userRoleRepository.findByAuthority(ROLE_ADMIN));
+            roles.add(this.userRoleRepository.findByAuthority(ROLE_ADMIN));
+            roles.add(this.userRoleRepository.findByAuthority(ROLE_MODERATOR));
+            roles.add(this.userRoleRepository.findByAuthority(ROLE_USER));
+        } else {
+            roles.add(this.userRoleRepository.findByAuthority(ROLE_USER));
+        }
+
+        return roles;
+    }
+}
+```
+
+```java
+@Entity
+@Table(name = "products")
+public class Product extends BaseEntity {
+
+    private String name;
+    private String description;
+    private BigDecimal price;
+    private String imageUrl;
+    private List<Category> categories;
+    private boolean isDeleted;
+
+    public Product() {
+    	super();
+    }
+
+    @Column(name = "product_name", nullable = false)
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Column(name = "description", nullable = false, columnDefinition = "TEXT")
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Column(name = "price", nullable = false, columnDefinition = "DECIMAL(10, 2) DEFAULT '0.00'")
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    @Column(name = "image_url", nullable = false)
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    @ManyToMany(targetEntity = Category.class, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "products_categories",
+            joinColumns = @JoinColumn(
+                    name = "product_id",
+                    referencedColumnName = "id"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "category_id",
+                    referencedColumnName = "id"
+            )
+    )
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+    
+    public boolean isDeleted() {
+        return this.isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+}
+```
+
+```java
+@Service
+public class ProductServiceImpl implements ProductService {
+
+    private final ProductRepository productRepository;
+    private final OfferRepository offerRepository;
+    private final CategoryService categoryService;
+    private final CloudinaryService cloudinaryService;
+    private final ProductValidationService productValidation;
+    private final ModelMapper modelMapper;
+
+    public ProductServiceImpl(
+            ProductRepository productRepository,
+            OfferRepository offerRepository, CategoryService categoryService,
+            CloudinaryService cloudinaryService, ProductValidationService productValidation,
+            ModelMapper modelMapper) {
+        
+    	this.productRepository = productRepository;
+        this.offerRepository = offerRepository;
+        this.categoryService = categoryService;
+        this.cloudinaryService = cloudinaryService;
+        this.productValidation = productValidation;
+        this.modelMapper = modelMapper;
+    }
+
+    @Override
+    public ProductServiceModel createProduct(ProductServiceModel productServiceModel, MultipartFile image) throws IOException {
+        if(!productValidation.isValid(productServiceModel) || image.isEmpty()) {
+            throw new IllegalArgumentException(INVALID_PRODUCT_EX_MSG);
+        }
+        if (productRepository.findByName(productServiceModel.getName()).orElse(null) != null) {
+            throw new ProductNameAlreadyExistsException(PRODUCT_NAME_EXIST_EX_MSG);
+        }
+        Product product = this.modelMapper.map(productServiceModel, Product.class);
+
+        product.setImageUrl(this.cloudinaryService.uploadImage(image));
+        product = this.productRepository.saveAndFlush(product);
+       
+        if (product == null){
+            throw new IllegalArgumentException(INVALID_PRODUCT_EX_MSG);
+        }
+        
+        return this.modelMapper.map(product, ProductServiceModel.class);
+    }
+
+    @Override
+    public List<ProductServiceModel> findAllProducts() {
+        List<Product> products = this.productRepository.findAll();
+
+        return products.stream()
+                .map(p -> this.modelMapper.map(p, ProductServiceModel.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public ProductServiceModel findProductById(String id) {
+        return this.productRepository.findById(id)
+                .map(p -> {
+                    ProductServiceModel productServiceModel = this.modelMapper.map(p, ProductServiceModel.class);
+                    this.offerRepository.findByProduct_Id(productServiceModel.getId())
+                            .ifPresent(o -> productServiceModel.setDiscountedPrice(o.getPrice()));
+
+                    return productServiceModel;
+                }).orElseThrow(() -> new ProductNotFoundException(PRODUCT_ID_DOESNT_EXIST_EX_MSG));
+    }
+
+    @Override
+    public ProductServiceModel editProduct(String id, ProductServiceModel productServiceModel,
+                                           boolean isNewImageUploaded, MultipartFile image) throws IOException {
+        Product product = this.productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(PRODUCT_ID_DOESNT_EXIST_EX_MSG));
+       
+        if(!productValidation.isValid(productServiceModel)) {
+            throw new IllegalArgumentException(INVALID_PRODUCT_EX_MSG);       
+        }
+        
+        productServiceModel.setId(id);
+        Product update = modelMapper.map(productServiceModel, Product.class);
+
+        if (product == null || update == null){
+            throw new ProductNotFoundException(PRODUCT_ID_DOESNT_EXIST_EX_MSG);
+        }
+
+        if (isNewImageUploaded){
+            update.setImageUrl(this.cloudinaryService.uploadImage(image));
+        } else {
+            update.setImageUrl(product.getImageUrl());
+        }
+
+        this.offerRepository.findByProduct_Id(product.getId())
+                .ifPresent(o -> {
+                    o.setPrice(product.getPrice().multiply(BigDecimal.valueOf(OFFER_SCHEDULED_DISCOUNT)));
+                    this.offerRepository.save(o);
+                });
+
+        return this.modelMapper.map(this.productRepository.saveAndFlush(update), ProductServiceModel.class);
+    }
+
+    @Override
+    public void deleteProduct(String id) {
+        Product product = this.productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(PRODUCT_ID_DOESNT_EXIST_EX_MSG));
+       
+        product.setDeleted(true);
+        this.productRepository.save(product);
+    }
+
+    @Override
+    public List<ProductServiceModel> findAllByCategory(String category) {
+        List<String> categories = this.categoryService.findAllCategories()
+                .stream().map(CategoryServiceModel::getName).collect(Collectors.toList());
+        if (!categories.contains(category)){
+            throw new SecurityException(PAGE_NOT_FOUND_EX_MSG);
+        }
+
+        return this.productRepository.findAll()
+                .stream()
+                .filter(product -> product.getCategories()
+                        .stream().anyMatch(categoryStream -> categoryStream.getName().equals(category)))
+                .map(product -> this.modelMapper.map(product, ProductServiceModel.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductServiceModel> findAllFilteredProducts() {
+        return findAllProducts()
+                .stream()
+                .filter(p -> !p.isDeleted())
+                .filter(p -> p.getCategories().stream().anyMatch(c -> !c.isDeleted()))
+                .map(p -> {
+                    ProductServiceModel productServiceModel = modelMapper.map(p, ProductServiceModel.class);
+                    offerRepository.findByProduct_Id(productServiceModel.getId())
+                            .ifPresent(o -> productServiceModel.setDiscountedPrice(o.getPrice()));
+
+                    return productServiceModel;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductServiceModel> findAllByCategoryFilteredProducts(String category) {
+        return findAllByCategory(category)
+                .stream()
+                .filter(p -> !p.isDeleted())
+                .filter(p -> p.getCategories().stream().anyMatch(c -> !c.isDeleted()))
+                .map(p -> {
+                    ProductServiceModel productServiceModel = modelMapper.map(p, ProductServiceModel.class);
+                    offerRepository.findByProduct_Id(productServiceModel.getId())
+                            .ifPresent(o -> productServiceModel.setDiscountedPrice(o.getPrice()));
+
+                    return productServiceModel;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductServiceModel> findProductsByPartOfName(String name) {
+        return findAllFilteredProducts()
+                .stream()
+                .filter(p->p.getName().toLowerCase().contains(name.toLowerCase()))
+                .map(p -> this.modelMapper.map(p, ProductServiceModel.class))
+                .collect(Collectors.toList());
     }
 }
 ```
